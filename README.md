@@ -1,27 +1,27 @@
-🎮  Catalog API – FIAP Cloud Games 
+💳 FIAP Cloud Games – Payment API
 
-.NET 8 | Entity Framework Core | SQL Server | Swagger | JWT
+.NET 8 | Entity Framework Core | SQL Server | JWT | Swagger
 
 📌 Sobre o Projeto
 
-A Catalog API é responsável por gerenciar o catálogo de jogos da plataforma FIAP Cloud Games (FCG).
-Ela centraliza todas as informações dos jogos disponíveis para compra, servindo como base para outros microsserviços, como Payment API e Users API.
+A Payment API é responsável pelo processamento e registro de pagamentos da plataforma FIAP Cloud Games (FCG).
+Ela controla o fluxo de compra de jogos, garantindo que as transações sejam registradas corretamente e associadas aos usuários.
 
 🎯 Funcionalidades
 
-Cadastro de jogos (Administrador)
+Criação de pagamentos
 
-Atualização e remoção de jogos
+Simulação de pagamento aprovado ou recusado
 
-Listagem de jogos disponíveis
+Registro de transações
 
-Consulta de detalhes de um jogo
+Consulta de histórico de pagamentos do usuário
 
-Ativação e desativação de jogos
+Integração com Users API
+
+Integração com Catalog API
 
 Persistência com Entity Framework Core
-
-Documentação com Swagger
 
 🏗️ Arquitetura
 
@@ -33,55 +33,48 @@ ORM: Entity Framework Core
 
 Autenticação: JWT
 
-Documentação: Swagger / OpenAPI
+Documentação: Swagger
 
 📂 Estrutura do Projeto
-Catalogs.API
+Payment.API
 ├── Controllers
 ├── Domain
 │   ├── Entities
-│   ├── Interfaces
-│   └── Enums
+│   ├── Enums
+│   └── Interfaces
 ├── Application
 │   ├── DTOs
 │   ├── Services
 │   └── UseCases
 ├── Infrastructure
 │   ├── Context
-│   └── Repositories
+│   ├── Repositories
+│   └── Integrations
 ├── Migrations
 ├── Program.cs
 └── appsettings.json
 
+🔄 Fluxo de Pagamento
+
+Usuário autenticado solicita a compra
+
+API valida o usuário
+
+API consulta o jogo no Catalog API
+
+Pagamento é processado (simulado)
+
+Transação é registrada
+
+Compra é confirmada
+
 🐳 Docker – Banco de Dados
-
-Imagem utilizada:
-
-mcr.microsoft.com/mssql/server:2022-latest
-
-
-Arquivo .env:
-
-ACCEPT_EULA=Y
-MSSQL_SA_PASSWORD=YourStrong!Passw0rd
-TZ=America/Sao_Paulo
-MSSQL_PID=Developer
-
-
-Subir o container:
-
 docker compose up -d
 
 🗄️ Entity Framework
-
-Aplicar migrations:
-
 dotnet ef database update
 
 🔑 JWT Authentication
-
-Configure a chave JWT:
-
 dotnet user-secrets set "Jwt:Key" "sua-chave-256-bits"
 
 ▶️ Executando a API
@@ -92,18 +85,16 @@ Swagger:
 
 https://localhost:{porta}/swagger
 
-🔐 Autorização
+🔐 Segurança
 
-Operações administrativas exigem perfil Administrador
+Todas as rotas exigem autenticação
 
-Autenticação via JWT
+Usuário só pode acessar seus próprios pagamentos
 
-Token deve ser informado no Swagger usando:
-
-Bearer {seu_token}
+Token JWT validado a cada requisição
 
 🔗 Integrações
 
-Payment API: consulta de jogos para validação de compras
+Users API: autenticação e identificação do usuário
 
-Users API: validação de permissões administrativas
+Catalog API: validação do jogo adquirido
