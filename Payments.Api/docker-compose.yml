@@ -1,6 +1,8 @@
 services:
   payments-api:
-    build: .
+    build:
+      context: ..
+      dockerfile: Payments.Api/Dockerfile
     container_name: payments-api
     ports:
       - "5003:8080"
